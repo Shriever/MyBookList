@@ -66,7 +66,7 @@ class UI {
   static clearFields() {
     document.querySelector("#title").value = "";
     // document.querySelector("#author").value = "";
-    document.querySelector("#isbn").value = "";
+    // document.querySelector("#isbn").value = "";
   }
 }
 
@@ -111,15 +111,14 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
   // Prevent actual submit
   e.preventDefault();
 
-  // Get form values
+  // Get form value
   const title = document.querySelector("#title").value;
-  const isbnInput = document.querySelector("#isbn").value;
   let found = false;
   let isbn;
 
   // Validate
-  if (title === "" || isbn === "") {
-    UI.showAlert("Please fill in all fields", "danger");
+  if (title === "") {
+    UI.showAlert("Please provide a title.", "danger");
   } else {
     // Fetch book from Google Books API
     const url = `https://www.googleapis.com/books/v1/volumes?q=${title}`;
@@ -129,45 +128,44 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
         return re.json();
       })
       .then((data) => {
-        console.log(data);
-        for (let item of data.items) {
-          const isbnValues = item.volumeInfo.industryIdentifiers;
-          if (!isbnValues) {
-            continue;
-          }
+        const volume = data.items[0].volumeInfo;
+        const isbnValues = volume.industryIdentifiers;
+        if (!isbnValues) {
+          UI.showAlert("We could not find that book", "danger");
+        }
 
-          for (let II of isbnValues) {
-            // check for matching isbn value
-            if (II.type === "ISBN_13") {
-              isbn = II.identifier;
-              if (isbnInput === II.identifier) {
-                found = true;
-                // Instatiate book
-                const book = new Book(
-                  item.volumeInfo.title,
-                  item.volumeInfo.authors[0],
-                  isbnInput,
-                  item.volumeInfo.pageCount
-                );
+        for (let II of isbnValues) {
+          // check for a valid isbn value
+          console.log(II);
+          if (II.type === "ISBN_13") {
+            isbn = II.identifier;
 
-                //  Add Book to UI
-                UI.addBookToList(book);
+            found = true;
+            // Instatiate book
+            const book = new Book(
+              volume.title,
+              volume.authors[0],
+              isbn,
+              volume.pageCount
+            );
 
-                // Add book to Store
-                Store.addBook(book);
+            //  Add Book to UI
+            UI.addBookToList(book);
 
-                // Update total pages
-                UI.updateTotalPages();
+            // Add book to Store
+            Store.addBook(book);
 
-                // Show success message
-                UI.showAlert("Book Added", "success");
+            // Update total pages
+            UI.updateTotalPages();
 
-                // Clear Fields
-                UI.clearFields();
-              }
-            }
+            // Show success message
+            UI.showAlert("Book Added", "success");
+
+            // Clear Fields
+            UI.clearFields();
           }
         }
+
         if (found === false) {
           isbnList = data.items[0].volumeInfo.industryIdentifiers;
           for (let II of isbnList) {
