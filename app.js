@@ -136,7 +136,6 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
 
         for (let II of isbnValues) {
           // check for a valid isbn value
-          console.log(II);
           if (II.type === "ISBN_13") {
             isbn = II.identifier;
 
@@ -180,7 +179,6 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
       })
       .catch((err) => {
         UI.showAlert("Something went wrong. Please try again.", "danger");
-        console.log(err);
       });
   }
 });
