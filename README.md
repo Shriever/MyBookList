@@ -10,4 +10,5 @@ the properly formatted title, author name, ISBN, and page count,
 all of which are displayed to the user.
 
 By creating this project, I gained valuable practice with OOP in Javascript 
-as well as experience requesting data from an API.
+as well as experience requesting data from an API. I also learned about localStorage
+and how to use it to hold on to data even when the window is restarted or closed. 
