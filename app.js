@@ -166,15 +166,10 @@ document.querySelector("#book-form").addEventListener("submit", (e) => {
         }
 
         if (found === false) {
-          isbnList = data.items[0].volumeInfo.industryIdentifiers;
-          for (let II of isbnList) {
-            if (II.type === "ISBN_13") {
-              UI.showAlert(
-                `We could not find that book. Please check the information you entered and try again. Hint: try '${II.identifier}' as your isbn`,
-                "danger"
-              );
-            }
-          }
+          UI.showAlert(
+            `We could not find that book. Please check the title you entered and try again.`,
+            "danger"
+          );
         }
       })
       .catch((err) => {
