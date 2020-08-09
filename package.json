@@ -1,0 +1,19 @@
+{
+  "name": "booklist",
+  "version": "1.0.0",
+  "description": "An app to store and explore books.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shriever/MyBookList.git"
+  },
+  "author": "Levi Lieberman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shriever/MyBookList/issues"
+  },
+  "homepage": "https://github.com/Shriever/MyBookList#readme"
+}
